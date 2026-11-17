@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Artificial Intelligence (AI) Learning Portal</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--bg-primary);
+            border: 1px solid #334155;
+            border-radius: 6px;
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: #475569;
+            margin-top: 0.7rem;
+        }
+
+        .btn-secondary:hover {
+            background-color: #334155;
+        }
+
+        #app-screen {
+            display: block;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid #334155;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 1.35rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+        }
+
+        .user-status-widget {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: var(--bg-primary);
+            padding: 0.45rem 1rem;
+            border-radius: 20px;
+            border: 1px solid #334155;
+            font-size: 0.9rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 85px auto 0 auto;
+            padding: 2rem;
+            min-height: calc(100vh - 85px);
+        }
+
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active-view {
+            display: block;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .three-col-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 968px) {
+            .dashboard-grid, .two-col-grid, .three-col-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h2 {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .progress-bar-container {
+            background-color: var(--bg-primary);
+            border-radius: 10px;
+            height: 20px;
+            width: 100%;
+            overflow: hidden;
+            margin: 0.5rem 0 1.5rem 0;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--accent) 0%, #a855f7 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease-out;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            background-color: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+
+        .stat-box .num {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .badge-item {
+            opacity: 0.25;
+            transition: opacity 0.3s;
+            filter: grayscale(100%);
+        }
+
+        .badge-item.unlocked {
+            opacity: 1;
+            filter: grayscale(0%);
+        }
+
+        .badge-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .badge-title {
+            font-size: 0.8rem;
+            color: var(--text-main);
+        }
+
+        .modules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .module-row {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 1.5rem;
+            background-color: var(--bg-secondary);
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 1.5rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .module-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .module-meta-box {
+            text-align: center;
+            background-color: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+
+        .module-meta-box h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .module-content-box h2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-viewer {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 968px) {
+            .lesson-viewer {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chapter-nav {
+            background-color: var(--bg-secondary);
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 1rem;
+            height: fit-content;
+        }
+
+        .chapter-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+
+        .chapter-link:hover, .chapter-link.active-chapter {
+            background-color: var(--bg-primary);
+            color: var(--accent);
+            border-left: 4px solid var(--accent);
+        }
+
+        .lesson-text-view {
+            background-color: var(--bg-secondary);
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 2rem;
+        }
+
+        .lesson-text-view h2 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .lesson-text-view p {
+            margin-bottom: 1.25rem;
+            color: #cbd5e1;
+        }
+
+        .quiz-container {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+        }
+
+        .quiz-question {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-option {
+            background-color: var(--bg-primary);
+            border: 1px solid #334155;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent);
+            background-color: #1e293b;
+        }
+
+        .quiz-option.selected {
+            border-color: var(--accent);
+            background-color: rgba(59, 130, 246, 0.15);
+        }
+
+        /* Career Explorer & Integrity Styling */
+        .career-card {
+            background-color: var(--bg-primary);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .career-card:hover, .career-card.active-career {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .tag-pill {
+            display: inline-block;
+            background-color: rgba(59, 130, 246, 0.15);
+            color: var(--accent);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin: 0.2rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .integrity-box {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 1.25rem;
+            border-left: 4px solid var(--success);
+        }
+
+        .integrity-box.red-light {
+            border-left-color: var(--danger);
+        }
+
+        .integrity-box ul {
+            margin-left: 1.25rem;
+            margin-top: 0.75rem;
+            color: #cbd5e1;
+        }
+
+        .integrity-box li {
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-embed-placeholder {
+            background-color: var(--bg-primary);
+            border: 2px dashed #475569;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-muted);
+        }
+
+        .source-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .source-table th, .source-table td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .source-table th {
+            background-color: var(--bg-primary);
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-screen">
+        <header>
+            <div class="nav-container">
+                <div class="logo">AI Learning Portal</div>
+                <nav>
+                    <ul>
+                        <li><a id="nav-dash" class="active" onclick="switchView('dashboard')">Dashboard</a></li>
+                        <li><a id="nav-modules" onclick="switchView('modules')">Learning Tracks</a></li>
+                        <li><a id="nav-playground" onclick="switchView('playground')">AI Playground</a></li>
+                        <li><a id="nav-integrity" onclick="switchView('integrity')">AI &amp; You</a></li>
+                        <li><a id="nav-careers" onclick="switchView('careers')">Career Explorer</a></li>
+                        <li><a id="nav-ref" onclick="switchView('references')">TSA Reference Hub</a></li>
+                    </ul>
+                </nav>
+                <div class="user-status-widget">
+                    <span id="user-display-name" style="font-weight: 500;">Guest Student</span>
+                    <span style="color: var(--text-muted)">|</span>
+                    <span id="global-xp-display" style="color: var(--warning); font-weight: bold;">0 XP</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- DASHBOARD VIEW -->
+            <section id="view-dashboard" class="view-section active-view">
+                <div class="dashboard-grid">
+                    <div>
+                        <div class="card">
+                            <h2>Welcome back, <span class="student-name">Guest Student</span>!</h2>
+                            <p style="margin-bottom: 1rem;">Demystifying Artificial Intelligence concepts, execution strategies, and ethics for grades 9–12 academic environments.</p>
+                            <div style="max-width: 340px;">
+                                <input type="text" class="form-control" placeholder="Personalize display name (optional)..." oninput="updateStudentName(this.value)">
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h2>Overall Portal Progress</h2>
+                            <div class="progress-bar-container">
+                                <div id="portal-progress-bar" class="progress-bar"></div>
+                            </div>
+                            <div class="stats-row">
+                                <div class="stat-box">
+                                    <div class="num" id="stat-level">0</div>
+                                    <div style="font-size:0.85rem; color:var(--text-muted)">Current Level</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="num" id="stat-xp">0</div>
+                                    <div style="font-size:0.85rem; color:var(--text-muted)">Total XP</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="num" id="stat-completed">0/3</div>
+                                    <div style="font-size:0.85rem; color:var(--text-muted)">Modules Complete</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card">
+                            <h2>Earned Digital Badges</h2>
+                            <div class="badge-grid">
+                                <div class="badge-item" id="badge-mod-0">
+                                    <div class="badge-icon">👁️‍🗨️</div>
+                                    <div class="badge-title">Foundations Master</div>
+                                </div>
+                                <div class="badge-item" id="badge-mod-1">
+                                    <div class="badge-icon">🛠️</div>
+                                    <div class="badge-title">Tool Architect</div>
+                                </div>
+                                <div class="badge-item" id="badge-mod-2">
+                                    <div class="badge-icon">⚖️</div>
+                                    <div class="badge-title">Ethical Guardian</div>
+                                </div>
+                                <div class="badge-item" id="badge-explorer">
+                                    <div class="badge-icon">🧭</div>
+                                    <div class="badge-title">Future Navigator</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MODULE TRACKS VIEW -->
+            <section id="view-modules" class="view-section">
+                <div id="modules-main-list" class="modules-list"></div>
+
+                <div id="active-lesson-panel" style="display:none; margin-top:2rem;">
+                    <button class="btn btn-secondary" style="width:auto; margin-bottom:1.5rem;" onclick="exitLessonWorkspace()">&larr; Back to Tracks Overview</button>
+                    <div class="lesson-viewer">
+                        <div class="chapter-nav" id="lesson-chapters-list"></div>
+                        <div>
+                            <div class="lesson-text-view" id="lesson-text-display"></div>
+                            <div class="card quiz-container" id="quiz-block" style="display:none;">
+                                <h2>Module Review Challenge</h2>
+                                <div class="quiz-question" id="quiz-question-text"></div>
+                                <div class="quiz-options" id="quiz-options-box"></div>
+                                <button class="btn" onclick="submitQuizAnswer()">Submit Answer Verification</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI PLAYGROUND VIEW -->
+            <section id="view-playground" class="view-section">
+                <div class="two-col-grid">
+                    <div class="card">
+                        <h2>🎭 Sentiment Analysis Sandbox</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 1rem;">Type any sentence below to see how Natural Language Processing (NLP) tokenizes words and scores emotional tone.</p>
+                        <div class="form-group">
+                            <textarea id="sentiment-input" class="form-control" rows="3" placeholder="Example: I am excited to learn how neural networks solve complex problems!"></textarea>
+                        </div>
+                        <button class="btn" onclick="runSentimentAnalyzer()">Analyze Tone (+10 XP)</button>
+                        <div id="sentiment-output" style="margin-top: 1.5rem; padding: 1rem; background-color: var(--bg-primary); border-radius: 8px; border: 1px solid #334155; display: none;"></div>
+                    </div>
+
+                    <div class="card">
+                        <h2>✍️ Academic Prompt Engineer</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 1rem;">Test a study prompt. Strong prompts include a <strong>Role</strong>, a <strong>Task</strong>, and <strong>Boundaries</strong>.</p>
+                        <div class="form-group">
+                            <textarea id="prompt-input" class="form-control" rows="3" placeholder="Example: Act as a biology tutor. Explain cellular respiration to a 10th grader using a sports analogy without giving me answers to copy."></textarea>
+                        </div>
+                        <button class="btn" onclick="runPromptTester()">Evaluate Prompt Quality (+10 XP)</button>
+                        <div id="prompt-output" style="margin-top: 1.5rem; padding: 1rem; background-color: var(--bg-primary); border-radius: 8px; border: 1px solid #334155; display: none;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI & YOU: ACADEMIC INTEGRITY GUIDE -->
+            <section id="view-integrity" class="view-section">
+                <div class="card">
+                    <h2>⚖️ AI &amp; You: High School Academic Integrity Guide</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Artificial intelligence is a powerful study partner when used transparently, but misusing it crosses academic honesty lines. Compare responsible vs. prohibited schoolwork habits below.</p>
+                    
+                    <div class="two-col-grid">
+                        <div class="integrity-box">
+                            <h3 style="color: var(--success);">✅ Green Light: Ethical Study Partner</h3>
+                            <ul>
+                                <li><strong>Concept Explainer:</strong> Asking AI to break down difficult AP Biology or Algebra concepts using analogies.</li>
+                                <li><strong>Practice Quiz Generator:</strong> Generating custom flashcards and mock test questions from your own class notes.</li>
+                                <li><strong>Brainstorming &amp; Outlining:</strong> Getting topic ideas or structural feedback before writing your own draft.</li>
+                                <li><strong>Code Debugging Coach:</strong> Pasting an error message to understand why a loop failed without copying entire solutions.</li>
+                            </ul>
+                        </div>
+                        <div class="integrity-box red-light">
+                            <h3 style="color: var(--danger);">🚫 Red Light: Academic Dishonesty</h3>
+                            <ul>
+                                <li><strong>Ghostwriting Essays:</strong> Submitting AI-generated paragraphs or essays as your own original writing.</li>
+                                <li><strong>Bypassing Problem Solving:</strong> Copying homework answers directly without working through the steps.</li>
+                                <li><strong>Fabricating Citations:</strong> Using unverified AI-invented quotes or fake research sources in a bibliography.</li>
+                                <li><strong>Sharing Sensitive Data:</strong> Uploading classmates' personal info, test keys, or private school files to public bots.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>🔍 Interactive Ethical Dilemma Simulator</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Test your judgment on a real high school scenario to earn <strong>+15 XP</strong>:</p>
+                    <div style="background-color: var(--bg-primary); padding: 1.25rem; border-radius: 8px; border: 1px solid #334155; margin-bottom: 1rem;">
+                        <strong>Scenario:</strong> You have a history research paper due tomorrow. You ask an AI chatbot for three quotes from a 19th-century speech, and it gives you three persuasive quotes with page numbers. What should you do next?
+                    </div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkIntegrityScenario(0)">A. Paste the quotes directly into your essay since the AI included page numbers.</div>
+                        <div class="quiz-option" onclick="checkIntegrityScenario(1)">B. Look up the actual historical speech in a verified library or archive source to confirm the quotes exist before citing them.</div>
+                        <div class="quiz-option" onclick="checkIntegrityScenario(2)">C. Ask the AI to rewrite the quotes so they sound even more dramatic.</div>
+                    </div>
+                    <div id="integrity-feedback" style="display: none; padding: 1rem; border-radius: 6px; margin-top: 1rem;"></div>
+                </div>
+            </section>
+
+            <!-- AI CAREER EXPLORER VIEW -->
+            <section id="view-careers" class="view-section">
+                <div class="card">
+                    <h2>🧭 AI Career Explorer (Grades 9–12 Pathway Map)</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Click any AI career role below to inspect high school classes to take now, essential skills, and real-world responsibilities (+15 XP for exploring).</p>
+                    
+                    <div class="three-col-grid" id="career-cards-grid"></div>
+
+                    <div id="career-detail-panel" style="margin-top: 1.5rem; background-color: var(--bg-primary); border: 1px solid var(--accent); border-radius: 8px; padding: 1.5rem; display: none;"></div>
+                </div>
+            </section>
+
+            <!-- TSA COMPLIANCE REFERENCES VIEW -->
+            <section id="view-references" class="view-section">
+                <div class="card">
+                    <h2>TSA Webmaster Compliance References &amp; Disclosures</h2>
+                    <p>This tracking framework page handles formal documentation of sources, assets, and frameworks compliant with national evaluation procedures.</p>
+                    
+                    <h3 style="margin-top:1.5rem; color:var(--accent);">Intellectual &amp; Software Framework Validation</h3>
+                    <table class="source-table">
+                        <thead>
+                            <tr>
+                                <th>Framework / System</th>
+                                <th>Implementation Scope</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Vanilla EcmaScript 6+ &amp; HTML5 DOM</td>
+                                <td>Interactive system environment built entirely without compilation framework packages or CMS builders to adhere to TSA Rule H.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="margin-top:1.5rem; color:var(--accent);">Document Artifact Verifications</h3>
+                    <div class="doc-embed-placeholder">
+                        <strong>Student Copyright Checklist Verification Artifact (PDF Placeholder)</strong>
+                        <p style="font-size:0.85rem; margin-top:0.5rem;">Maximum Page Length: 1 Page. Hardcopy attachment reference map for 2027/2028 Appendix rules evaluation.</p>
+                    </div>
+                    <div class="doc-embed-placeholder">
+                        <strong>Resources and AI Reflection Analysis (PDF)</strong>
+                        <p style="font-size:0.85rem; margin-top:0.5rem;">Maximum Page Length: 4 Pages. Full reflective logs detailing prompting engineering metrics, source citations, and systemic learning synthesis.</p>
+                    </div>
+
+                    <h3 style="margin-top:1.5rem; color:var(--accent);">Academic Information Citations</h3>
+                    <table class="source-table">
+                        <thead>
+                            <tr>
+                                <th>Source Identifier</th>
+                                <th>Type / Asset Referenced</th>
+                                <th>Permission Documentation Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>UNESCO AI Competency Framework for Students</td>
+                                <td>Curriculum Structuring Criteria</td>
+                                <td>Public Academic Domain Usage Documented.</td>
+                            </tr>
+                            <tr>
+                                <td>W3C Web Content Accessibility Guidelines (WCAG)</td>
+                                <td>UI Contrast Ratios &amp; Layout Rules</td>
+                                <td>Open Web Specifications Standard Access.</td>
+                            </tr>
+                            <tr>
+                                <td>U.S. Bureau of Labor Statistics (BLS) Occupational Outlook</td>
+                                <td>AI &amp; Computer Science Career Pathways</td>
+                                <td>U.S. Government Public Domain Work Documented.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const modulesData = [
+            {
+                id: 0,
+                title: "Foundations of Artificial Intelligence",
+                description: "Explore AI history, Machine Learning, Neural Networks, and how algorithms learn from data.",
+                chapters: [
+                    { 
+                        title: "1. What is Artificial Intelligence?", 
+                        content: "Artificial Intelligence (AI) refers to computer systems capable of performing tasks that typically require human intelligence, such as recognizing speech, identifying patterns, and making predictions. Unlike traditional software that follows rigid 'if-then' rules written by programmers, modern AI learns patterns directly from examples." 
+                    },
+                    { 
+                        title: "2. Machine Learning vs. Deep Learning", 
+                        content: "Machine Learning (ML) is a branch of AI where algorithms improve at a task as they process more training data. Deep Learning is a specialized subset of ML that uses multi-layered Neural Networks—inspired by neurons in the human brain—to process complex inputs like images, video, and natural human language." 
+                    },
+                    { 
+                        title: "3. Real-World AI in Action", 
+                        content: "High school students interact with AI daily. Recommendation algorithms suggest videos on streaming apps, computer vision powers autonomous vehicle sensors, and medical AI models help doctors detect diseases early from X-ray scans." 
+                    }
+                ],
+                quizzes: [
+                    {
+                        question: "How does Machine Learning differ from traditional computer programming?",
+                        options: ["It requires no electricity to run", "It learns patterns from training data instead of following only hard-coded rules", "It only works on physical robots", "It cannot process numbers"],
+                        correct: 1
+                    },
+                    {
+                        question: "Which layer inside a Neural Network processes intermediate feature patterns between input and output?",
+                        options: ["Hidden Layer", "Firewall Layer", "Browser Cache", "External Storage Layer"],
+                        correct: 0
+                    },
+                    {
+                        question: "Which AI field enables self-driving cars to recognize stop signs and pedestrians?",
+                        options: ["Spreadsheet Automation", "Computer Vision", "Audio Compression", "Word Processing"],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                id: 1,
+                title: "Practical AI Tools & Prompt Engineering",
+                description: "Master Large Language Models (LLMs), Transformer mechanics, and ethical study workflows.",
+                chapters: [
+                    { 
+                        title: "1. How Large Language Models Work", 
+                        content: "Large Language Models (LLMs) use a deep learning design called the Transformer architecture. Rather than 'thinking' or 'knowing' facts like a person, an LLM predicts the most statistically likely next word (or token) in a sequence based on patterns learned during training." 
+                    },
+                    { 
+                        title: "2. The R-T-C-B Prompting Framework", 
+                        content: "To get helpful study assistance from AI, structure prompts using four parts: Role (who the AI should act as), Task (what you need help understanding), Context (your grade level or topic), and Boundaries (rules like 'quiz me instead of writing the essay')." 
+                    },
+                    { 
+                        title: "3. Hallucinations & Fact Verification", 
+                        content: "Because LLMs predict probable text rather than querying a verified database, they can confidently invent fake quotes, dates, or citations—a flaw called 'hallucination.' Always verify AI-generated facts against primary academic sources." 
+                    }
+                ],
+                quizzes: [
+                    {
+                        question: "What core neural network architecture powers modern generative Large Language Models?",
+                        options: ["The Transformer Architecture", "Linear Punch Cards", "Static HTML Tables", "Manual Decision Trees"],
+                        correct: 0
+                    },
+                    {
+                        question: "What is an AI 'hallucination'?",
+                        options: ["When a computer screen flickers", "When an AI confidently generates false or fabricated information", "When an AI refuses to answer a question", "A type of computer virus"],
+                        correct: 1
+                    },
+                    {
+                        question: "Which prompt is best for ethically studying for a history exam?",
+                        options: ["Write my 5-page essay on World War II.", "Act as a history tutor and quiz me with 5 practice questions on the causes of World War II.", "Give me the answers to worksheet #4.", "Summarize everything ever written."],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "Ethics, Bias & Academic Integrity",
+                description: "Evaluate algorithmic bias, data privacy, copyright, and responsible AI use in grades 9–12.",
+                chapters: [
+                    { 
+                        title: "1. Algorithmic Bias & Training Data", 
+                        content: "AI models reflect the data they are trained on. If historical training datasets contain human prejudices or lack diverse representation, the AI system will repeat and amplify those biases in hiring, facial recognition, or grading tools." 
+                    },
+                    { 
+                        title: "2. AI & You: Academic Integrity Rules", 
+                        content: "Using AI to brainstorm ideas, explain tough concepts, or generate practice quizzes supports learning. Submitting AI-generated writing or code as your own original work violates academic honesty policies and prevents skill development." 
+                    },
+                    { 
+                        title: "3. Data Privacy & Digital Footprints", 
+                        content: "Never paste personal information, passwords, private school records, or unpublished creative work into public AI chatbots, as prompts may be logged or used to train future models." 
+                    }
+                ],
+                quizzes: [
+                    {
+                        question: "Where does systemic bias in an AI model usually originate?",
+                        options: ["From skewed or biased human-created training datasets", "From monitor brightness settings", "From internet download speeds", "From keyboard layouts"],
+                        correct: 0
+                    },
+                    {
+                        question: "Which action is an ethical use of AI for high school coursework?",
+                        options: ["Copying an AI-written essay and putting your name on it", "Asking AI to explain a confusing math step and then solving practice problems yourself", "Pasting classmates' private personal info into a chatbot", "Using AI to fabricate lab experiment data"],
+                        correct: 1
+                    },
+                    {
+                        question: "Why should you avoid entering sensitive personal data into public AI tools?",
+                        options: ["It slows down the Wi-Fi", "Prompts may be stored or used to train future models", "AI cannot read personal names", "It deletes your browser history"],
+                        correct: 1
+                    }
+                ]
+            }
+        ];
+
+        const careersData = [
+            {
+                title: "Machine Learning Engineer",
+                icon: "🤖",
+                tagline: "Builds and trains predictive algorithms and neural networks.",
+                hsClasses: ["AP Computer Science A", "AP Calculus AB/BC", "AP Statistics"],
+                skills: ["Python", "Linear Algebra", "Data Modeling", "PyTorch / TensorFlow"],
+                dailyWork: "Designs training pipelines, cleans massive datasets, and optimizes AI models so they run fast and accurately in real-world apps."
+            },
+            {
+                title: "AI Ethics & Policy Specialist",
+                icon: "⚖️",
+                tagline: "Audits AI systems for fairness, safety, privacy, and legal compliance.",
+                hsClasses: ["AP Government & Politics", "AP English Language", "Computer Science Principles"],
+                skills: ["Critical Writing", "Bias Auditing", "Privacy Law", "Public Speaking"],
+                dailyWork: "Tests AI tools for demographic bias, writes responsible-use guidelines for schools and companies, and advises lawmakers on AI safety."
+            },
+            {
+                title: "Data Scientist",
+                icon: "📊",
+                tagline: "Extracts actionable insights from complex datasets to guide decisions.",
+                hsClasses: ["AP Statistics", "Algebra II / Pre-Calculus", "Economics"],
+                skills: ["SQL", "Data Visualization", "Statistical Inference", "R / Python"],
+                dailyWork: "Analyzes patterns in healthcare, climate science, or sports analytics and builds predictive dashboards for organizations."
+            },
+            {
+                title: "Computer Vision Engineer",
+                icon: "👁️",
+                tagline: "Teaches machines to interpret images, video, and 3D environments.",
+                hsClasses: ["AP Physics", "AP Computer Science", "Geometry & Trigonometry"],
+                skills: ["Image Processing", "C++ / Python", "Sensor Fusion", "Neural Networks"],
+                dailyWork: "Develops visual recognition software for medical imaging diagnostics, autonomous vehicles, and agricultural robotics."
+            },
+            {
+                title: "NLP & Conversational AI Designer",
+                icon: "💬",
+                tagline: "Shapes how AI understands and generates human language safely.",
+                hsClasses: ["AP Literature", "World Languages", "Psychology", "CS Principles"],
+                skills: ["Prompt Architecture", "Linguistics", "UX Writing", "Evaluation Testing"],
+                dailyWork: "Designs educational tutoring assistants, translation engines, and safety guardrails for large language models."
+            },
+            {
+                title: "AI Hardware & Robotics Architect",
+                icon: "🔌",
+                tagline: "Designs specialized chips and physical robots powered by edge AI.",
+                hsClasses: ["AP Physics C", "Robotics / Engineering", "Digital Electronics"],
+                skills: ["Circuit Design", "Embedded Systems", "CAD", "C / Rust"],
+                dailyWork: "Creates energy-efficient processors (GPUs/NPUs) and autonomous robotic systems for manufacturing and space exploration."
+            }
+        ];
+
+        let userProgress = {
+            username: "Guest Student",
+            xp: 0,
+            level: 0,
+            completedModules: [],
+            bonuses: { sentiment: false, prompt: false, integrity: false, career: false }
+        };
+
+        let currentActiveModuleIndex = null;
+        let currentQuizStep = 0;
+        let selectedQuizOptionIdx = null;
+
+        function initMainInterface() {
+            document.querySelectorAll('.student-name').forEach(el => el.textContent = userProgress.username);
+            document.getElementById('user-display-name').textContent = userProgress.username;
+            renderModulesOverview();
+            renderCareersGrid();
+            updateDashboardMetrics();
+        }
+
+        window.addEventListener('DOMContentLoaded', initMainInterface);
+
+        function updateStudentName(val) {
+            const clean = val.trim() || "Guest Student";
+            userProgress.username = clean;
+            document.querySelectorAll('.student-name').forEach(el => el.textContent = clean);
+            document.getElementById('user-display-name').textContent = clean;
+        }
+
+        function switchView(target) {
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active-view'));
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+
+            const map = {
+                dashboard: ['view-dashboard', 'nav-dash'],
+                modules: ['view-modules', 'nav-modules'],
+                playground: ['view-playground', 'nav-playground'],
+                integrity: ['view-integrity', 'nav-integrity'],
+                careers: ['view-careers', 'nav-careers'],
+                references: ['view-references', 'nav-ref']
+            };
+
+            if (map[target]) {
+                document.getElementById(map[target][0]).classList.add('active-view');
+                document.getElementById(map[target][1]).classList.add('active');
+            }
+        }
+
+        function renderModulesOverview() {
+            const mainContainer = document.getElementById('modules-main-list');
+            mainContainer.innerHTML = '';
+            
+            modulesData.forEach((mod, idx) => {
+                const isDone = userProgress.completedModules.includes(mod.id);
+                const row = document.createElement('div');
+                row.className = 'module-row';
+                row.innerHTML = `
+                    <div class="module-meta-box">
+                        <h3>Module ${idx + 1}</h3>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem;">Status:</p>
+                        <span style="color: ${isDone ? 'var(--success)' : 'var(--warning)'}; font-weight:bold;">
+                            ${isDone ? '✓ Completed' : '○ Ready to Start'}
+                        </span>
+                    </div>
+                    <div class="module-content-box">
+                        <h2>${mod.title}</h2>
+                        <p style="color: var(--text-muted); margin-bottom:1rem;">${mod.description}</p>
+                        <button class="btn" style="width:auto;" onclick="launchModuleWorkspace(${idx})">
+                            ${isDone ? 'Review Learning Materials' : 'Launch Learning Track'}
+                        </button>
+                    </div>
+                `;
+                mainContainer.appendChild(row);
+            });
+        }
+
+        function launchModuleWorkspace(modIdx) {
+            currentActiveModuleIndex = modIdx;
+            document.getElementById('modules-main-list').style.display = 'none';
+            document.getElementById('active-lesson-panel').style.display = 'block';
+
+            const mod = modulesData[modIdx];
+            const navBox = document.getElementById('lesson-chapters-list');
+            navBox.innerHTML = '';
+
+            mod.chapters.forEach((chap, cIdx) => {
+                const lnk = document.createElement('a');
+                lnk.className = 'chapter-link' + (cIdx === 0 ? ' active-chapter' : '');
+                lnk.textContent = chap.title;
+                lnk.onclick = () => selectChapter(cIdx);
+                navBox.appendChild(lnk);
+            });
+
+            const quizLnk = document.createElement('a');
+            quizLnk.className = 'chapter-link';
+            quizLnk.style.color = 'var(--warning)';
+            quizLnk.textContent = '🏆 Module Mastery Quiz (3 Questions)';
+            quizLnk.id = 'quiz-nav-trigger-btn';
+            quizLnk.onclick = () => {
+                currentQuizStep = 0;
+                launchQuizSection();
+            };
+            navBox.appendChild(quizLnk);
+
+            selectChapter(0);
+        }
+
+        function selectChapter(cIdx) {
+            document.getElementById('quiz-block').style.display = 'none';
+            document.getElementById('lesson-text-display').style.display = 'block';
+            
+            const links = document.querySelectorAll('.chapter-link');
+            links.forEach((l, idx) => {
+                if (idx === cIdx) l.classList.add('active-chapter');
+                else l.classList.remove('active-chapter');
+            });
+
+            const mod = modulesData[currentActiveModuleIndex];
+            const chapterData = mod.chapters[cIdx];
+            const isLastChapter = cIdx === mod.chapters.length - 1;
+
+            const actionButton = !isLastChapter
+                ? `<button class="btn" style="width:auto;" onclick="selectChapter(${cIdx + 1})">Next Chapter &rarr;</button>`
+                : `<button class="btn" style="width:auto; background-color: var(--success);" onclick="currentQuizStep = 0; launchQuizSection();">Start Module Quiz &rarr;</button>`;
+
+            const display = document.getElementById('lesson-text-display');
+            display.innerHTML = `
+                <h2>${chapterData.title}</h2>
+                <p>${chapterData.content}</p>
+                <div style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+                    ${actionButton}
+                </div>
+            `;
+        }
+
+        function launchQuizSection() {
+            document.getElementById('lesson-text-display').style.display = 'none';
+            document.getElementById('quiz-block').style.display = 'block';
+            
+            const links = document.querySelectorAll('.chapter-link');
+            links.forEach(l => l.classList.remove('active-chapter'));
+            document.getElementById('quiz-nav-trigger-btn').classList.add('active-chapter');
+
+            const mod = modulesData[currentActiveModuleIndex];
+            const currentQ = mod.quizzes[currentQuizStep];
+
+            document.getElementById('quiz-question-text').textContent = 'Question ' + (currentQuizStep + 1) + ' of ' + mod.quizzes.length + ': ' + currentQ.question;
+            
+            const optBox = document.getElementById('quiz-options-box');
+            optBox.innerHTML = '';
+            selectedQuizOptionIdx = null;
+
+            currentQ.options.forEach((opt, oIdx) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-option';
+                div.textContent = opt;
+                div.onclick = () => {
+                    document.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('selected'));
+                    div.classList.add('selected');
+                    selectedQuizOptionIdx = oIdx;
+                };
+                optBox.appendChild(div);
+            });
+        }
+
+        function submitQuizAnswer() {
+            if (selectedQuizOptionIdx === null) {
+                alert("Please select an answer before submitting!");
+                return;
+            }
+
+            const mod = modulesData[currentActiveModuleIndex];
+            const currentQ = mod.quizzes[currentQuizStep];
+
+            if (selectedQuizOptionIdx === currentQ.correct) {
+                if (currentQuizStep < mod.quizzes.length - 1) {
+                    currentQuizStep++;
+                    launchQuizSection();
+                } else {
+                    alert("Module Complete! You earned +100 XP and unlocked your badge.");
+                    if (!userProgress.completedModules.includes(mod.id)) {
+                        userProgress.completedModules.push(mod.id);
+                        userProgress.xp += 100;
+                    }
+                    updateDashboardMetrics();
+                    exitLessonWorkspace();
+                }
+            } else {
+                alert("Not quite! Review the chapter text and try that question again.");
+            }
+        }
+
+        function exitLessonWorkspace() {
+            document.getElementById('active-lesson-panel').style.display = 'none';
+            document.getElementById('modules-main-list').style.display = 'flex';
+            renderModulesOverview();
+        }
+
+        function updateDashboardMetrics() {
+            userProgress.level = Math.floor(userProgress.xp / 100);
+            document.getElementById('global-xp-display').textContent = userProgress.xp + ' XP';
+            document.getElementById('stat-level').textContent = userProgress.level;
+            document.getElementById('stat-xp').textContent = userProgress.xp;
+            document.getElementById('stat-completed').textContent = userProgress.completedModules.length + '/3';
+
+            const percentage = (userProgress.completedModules.length / 3) * 100;
+            document.getElementById('portal-progress-bar').style.width = percentage + '%';
+
+            userProgress.completedModules.forEach(id => {
+                const bEl = document.getElementById('badge-mod-' + id);
+                if (bEl) bEl.classList.add('unlocked');
+            });
+
+            if (userProgress.bonuses.career && userProgress.bonuses.integrity) {
+                const expBadge = document.getElementById('badge-explorer');
+                if (expBadge) expBadge.classList.add('unlocked');
+            }
+        }
+
+        function runSentimentAnalyzer() {
+            const text = document.getElementById('sentiment-input').value.trim();
+            const outBox = document.getElementById('sentiment-output');
+            if (!text) {
+                alert("Enter a sentence first to analyze its sentiment.");
+                return;
+            }
+
+            const positiveWords = ["good", "great", "awesome", "excited", "love", "happy", "helpful", "amazing", "smart", "clear", "best", "fun", "cool"];
+            const negativeWords = ["bad", "terrible", "hate", "sad", "confusing", "hard", "wrong", "worst", "boring", "fake", "biased", "scary", "error"];
+
+            const tokens = text.toLowerCase().replace(/[^a-z\s]/g, "").split(/\s+/);
+            let score = 0;
+            let matched = [];
+
+            tokens.forEach(word => {
+                if (positiveWords.includes(word)) { score++; matched.push('+' + word); }
+                if (negativeWords.includes(word)) { score--; matched.push('-' + word); }
+            });
+
+            let label = "Neutral 😐";
+            let color = "var(--text-main)";
+            if (score > 0) { label = "Positive 😊"; color = "var(--success)"; }
+            if (score < 0) { label = "Negative 😟"; color = "var(--warning)"; }
+
+            if (!userProgress.bonuses.sentiment) {
+                userProgress.bonuses.sentiment = true;
+                userProgress.xp += 10;
+                updateDashboardMetrics();
+            }
+
+            outBox.style.display = "block";
+            outBox.innerHTML = `
+                <div style="font-size: 1.1rem; font-weight: bold; color: ${color}; margin-bottom: 0.5rem;">Detected Tone: ${label} (Net Score: ${score})</div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);"><strong>Tokens Scanned:</strong> ${tokens.length} words | <strong>Signal Keywords:</strong> ${matched.length ? matched.join(", ") : "None detected"}</div>
+            `;
+        }
+
+        function runPromptTester() {
+            const text = document.getElementById('prompt-input').value.trim();
+            const outBox = document.getElementById('prompt-output');
+            if (!text) {
+                alert("Enter a prompt to test its structure.");
+                return;
+            }
+
+            const lower = text.toLowerCase();
+            const hasRole = /act as|you are|tutor|teacher|expert|coach/.test(lower);
+            const hasTask = /explain|quiz|summarize|compare|help me understand|outline/.test(lower);
+            const hasBounds = /without|do not|don't|grade|bullet|short|analogy|step/.test(lower);
+
+            const criteriaMet = [hasRole, hasTask, hasBounds].filter(Boolean).length;
+            let rating = "Needs Detail (1/3)";
+            let color = "var(--warning)";
+            if (criteriaMet === 2) { rating = "Good Structure (2/3)"; color = "var(--accent)"; }
+            if (criteriaMet === 3) { rating = "Master Prompt (3/3)"; color = "var(--success)"; }
+
+            if (!userProgress.bonuses.prompt) {
+                userProgress.bonuses.prompt = true;
+                userProgress.xp += 10;
+                updateDashboardMetrics();
+            }
+
+            outBox.style.display = "block";
+            outBox.innerHTML = `
+                <div style="font-size: 1.1rem; font-weight: bold; color: ${color}; margin-bottom: 0.5rem;">Prompt Rating: ${rating}</div>
+                <ul style="list-style: none; font-size: 0.85rem; color: var(--text-muted);">
+                    <li>${hasRole ? "✅" : "❌"} <strong>Role Assigned</strong> (e.g., "Act as a tutor...")</li>
+                    <li>${hasTask ? "✅" : "❌"} <strong>Clear Learning Task</strong> (e.g., "Explain..." or "Quiz me...")</li>
+                    <li>${hasBounds ? "✅" : "❌"} <strong>Ethical Boundaries / Format</strong> (e.g., "without giving me answers to copy")</li>
+                </ul>
+            `;
+        }
+
+        function checkIntegrityScenario(choice) {
+            const fb = document.getElementById('integrity-feedback');
+            fb.style.display = 'block';
+            if (choice === 1) {
+                fb.style.backgroundColor = 'rgba(16, 185, 129, 0.15)';
+                fb.style.border = '1px solid var(--success)';
+                fb.innerHTML = '<strong style="color:var(--success);">✅ Correct!</strong> LLMs frequently hallucinate quotes and page numbers. Verifying against a primary source protects your academic integrity.';
+                if (!userProgress.bonuses.integrity) {
+                    userProgress.bonuses.integrity = true;
+                    userProgress.xp += 15;
+                    updateDashboardMetrics();
+                }
+            } else {
+                fb.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+                fb.style.border = '1px solid var(--danger)';
+                fb.innerHTML = '<strong style="color:var(--danger);">❌ Risky Choice:</strong> Never trust AI-generated quotes or page numbers without verifying them in an original historical source.';
+            }
+        }
+
+        function renderCareersGrid() {
+            const grid = document.getElementById('career-cards-grid');
+            grid.innerHTML = '';
+            careersData.forEach((c, idx) => {
+                const card = document.createElement('div');
+                card.className = 'career-card';
+                card.id = 'career-card-' + idx;
+                card.onclick = () => selectCareer(idx);
+                card.innerHTML = `
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">${c.icon}</div>
+                    <h3 style="color: var(--accent); margin-bottom: 0.35rem;">${c.title}</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">${c.tagline}</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function selectCareer(idx) {
+            document.querySelectorAll('.career-card').forEach(el => el.classList.remove('active-career'));
+            document.getElementById('career-card-' + idx).classList.add('active-career');
+
+            const c = careersData[idx];
+            const panel = document.getElementById('career-detail-panel');
+            panel.style.display = 'block';
+            panel.innerHTML = `
+                <h3 style="color: var(--accent); font-size: 1.3rem; margin-bottom: 0.5rem;">${c.icon} ${c.title}</h3>
+                <p style="margin-bottom: 1rem; color: #cbd5e1;"><strong>What They Do:</strong> ${c.dailyWork}</p>
+                <div style="margin-bottom: 0.75rem;">
+                    <strong>Recommended High School Classes:</strong><br>
+                    ${c.hsClasses.map(cls => '<span class="tag-pill">' + cls + '</span>').join('')}
+                </div>
+                <div>
+                    <strong>Core Technical &amp; Human Skills:</strong><br>
+                    ${c.skills.map(sk => '<span class="tag-pill" style="border-color: var(--success); color: var(--success);">' + sk + '</span>').join('')}
+                </div>
+            `;
+
+            if (!userProgress.bonuses.career) {
+                userProgress.bonuses.career = true;
+                userProgress.xp += 15;
+                updateDashboardMetrics();
+            }
+        }
+    </script>
+</body>
+</html>
