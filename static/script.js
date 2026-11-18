@@ -8,16 +8,25 @@ const modulesData = [
                 title: "1. What is Artificial Intelligence?", 
                 content: "Artificial Intelligence (AI) refers to computer systems capable of performing tasks that typically require human intelligence, such as recognizing speech, identifying patterns, and making predictions. Unlike traditional software that follows rigid 'if-then' rules written by programmers, modern AI learns patterns directly from examples." 
             },
+            {
+                title: "2. How does Artificial Intelligence work?",
+                content: "Artificial Intelligence (AI) works by taking a dataset with a large number of inputs and cooresponding outputs. Then during training it will recognize patterns in the data, manipulating the weights of each neuron to increase the change of a given input outputing the correct output. The data passes from the input layer, through the hidden layer(s), before coming to the output layer. The output layer is the final result to then be interpretted by whatever program."
+            }
             { 
-                title: "2. Machine Learning vs. Deep Learning", 
+                title: "3. Machine Learning vs. Deep Learning", 
                 content: "Machine Learning (ML) is a branch of AI where algorithms improve at a task as they process more training data. Deep Learning is a specialized subset of ML that uses multi-layered Neural Networks—inspired by neurons in the human brain—to process complex inputs like images, video, and natural human language." 
             },
             { 
-                title: "3. Real-World AI in Action", 
+                title: "4. Real-World AI in Action", 
                 content: "High school students interact with AI daily. Recommendation algorithms suggest videos on streaming apps, computer vision powers autonomous vehicle sensors, and medical AI models help doctors detect diseases early from X-ray scans." 
             }
         ],
         quizzes: [
+            {
+                question: "What is the primary objective of AI?",
+                options: ["Answering open ended questions", "Solving math problems", "Problem Solving", "Recognizing patterns"],
+                correct: 3
+            },
             {
                 question: "How does Machine Learning differ from traditional computer programming?",
                 options: ["It requires no electricity to run", "It learns patterns from training data instead of following only hard-coded rules", "It only works on physical robots", "It cannot process numbers"],
@@ -25,8 +34,8 @@ const modulesData = [
             },
             {
                 question: "Which layer inside a Neural Network processes intermediate feature patterns between input and output?",
-                options: ["Hidden Layer", "Firewall Layer", "Browser Cache", "External Storage Layer"],
-                correct: 0
+                options: ["Browser Cache", "Firewall Layer", "Hidden Layer", "External Storage Layer"],
+                correct: 2
             },
             {
                 question: "Which AI field enables self-driving cars to recognize stop signs and pedestrians?",
@@ -50,10 +59,15 @@ const modulesData = [
             },
             { 
                 title: "3. Hallucinations & Fact Verification", 
-                content: "Because LLMs predict probable text rather than querying a verified database, they can confidently invent fake quotes, dates, or citations—a flaw called 'hallucination.' Always verify AI-generated facts against primary academic sources." 
+                content: "Because LLMs predict probable text rather than querying a verified database, they can confidently invent fake quotes, dates, or citations, a flaw called 'hallucination.' Always verify AI-generated facts against primary academic sources." 
             }
         ],
         quizzes: [
+            {
+                question: "Which prompt should provide the best results for ethically studying for history?",
+                options: ["Write my 5-page essay on World War II.", "Give me the answers to worksheet #4.", "Act as a history tutor and quiz me with 5 practice questions on the causes of World War II.", "Generate a 20 question quiz about World War II."],
+                correct: 2
+            },
             {
                 question: "What core neural network architecture powers modern generative Large Language Models?",
                 options: ["The Transformer Architecture", "Linear Punch Cards", "Static HTML Tables", "Manual Decision Trees"],
@@ -65,9 +79,9 @@ const modulesData = [
                 correct: 1
             },
             {
-                question: "Which prompt is best for ethically studying for a history exam?",
-                options: ["Write my 5-page essay on World War II.", "Act as a history tutor and quiz me with 5 practice questions on the causes of World War II.", "Give me the answers to worksheet #4.", "Summarize everything ever written."],
-                correct: 1
+                question: "What should be done after recieving information from an AI?",
+                options: ["Submit the response", "Ask another AI if it is correct", "Start operating on the patient.", "Fact check using academic source"],
+                correct: 3
             }
         ]
     },
