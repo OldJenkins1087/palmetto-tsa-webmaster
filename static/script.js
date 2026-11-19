@@ -4,21 +4,21 @@ const modulesData = [
         title: "Foundations of Artificial Intelligence",
         description: "Explore AI history, Machine Learning, Neural Networks, and how algorithms learn from data.",
         chapters: [
-            { 
-                title: "1. What is Artificial Intelligence?", 
-                content: "Artificial Intelligence (AI) refers to computer systems capable of performing tasks that typically require human intelligence, such as recognizing speech, identifying patterns, and making predictions. Unlike traditional software that follows rigid 'if-then' rules written by programmers, modern AI learns patterns directly from examples." 
+            {
+                title: "1. What is Artificial Intelligence?",
+                content: "Artificial Intelligence (AI) refers to computer systems capable of performing tasks that typically require human intelligence, such as recognizing speech, identifying patterns, and making predictions. Unlike traditional software that follows rigid 'if-then' rules written by programmers, modern AI learns patterns directly from examples."
             },
             {
                 title: "2. How does Artificial Intelligence work?",
                 content: "Artificial Intelligence (AI) works by taking a dataset with a large number of inputs and cooresponding outputs. Then during training it will recognize patterns in the data, manipulating the weights of each neuron to increase the change of a given input outputing the correct output. The data passes from the input layer, through the hidden layer(s), before coming to the output layer. The output layer is the final result to then be interpretted by whatever program."
-            }
-            { 
-                title: "3. Machine Learning vs. Deep Learning", 
-                content: "Machine Learning (ML) is a branch of AI where algorithms improve at a task as they process more training data. Deep Learning is a specialized subset of ML that uses multi-layered Neural Networks—inspired by neurons in the human brain—to process complex inputs like images, video, and natural human language." 
             },
-            { 
-                title: "4. Real-World AI in Action", 
-                content: "High school students interact with AI daily. Recommendation algorithms suggest videos on streaming apps, computer vision powers autonomous vehicle sensors, and medical AI models help doctors detect diseases early from X-ray scans." 
+            {
+                title: "3. Machine Learning vs. Deep Learning",
+                content: "Machine Learning (ML) is a branch of AI where algorithms improve at a task as they process more training data. Deep Learning is a specialized subset of ML that uses multi-layered Neural Networks—inspired by neurons in the human brain—to process complex inputs like images, video, and natural human language."
+            },
+            {
+                title: "4. Real-World AI in Action",
+                content: "High school students interact with AI daily. Recommendation algorithms suggest videos on streaming apps, computer vision powers autonomous vehicle sensors, and medical AI models help doctors detect diseases early from X-ray scans."
             }
         ],
         quizzes: [
@@ -49,17 +49,17 @@ const modulesData = [
         title: "Practical AI Tools & Prompt Engineering",
         description: "Master Large Language Models (LLMs), Transformer mechanics, and ethical study workflows.",
         chapters: [
-            { 
-                title: "1. How Large Language Models Work", 
-                content: "Large Language Models (LLMs) use a deep learning design called the Transformer architecture. Rather than 'thinking' or 'knowing' facts like a person, an LLM predicts the most statistically likely next word (or token) in a sequence based on patterns learned during training." 
+            {
+                title: "1. How Large Language Models Work",
+                content: "Large Language Models (LLMs) use a deep learning design called the Transformer architecture. Rather than 'thinking' or 'knowing' facts like a person, an LLM predicts the most statistically likely next word (or token) in a sequence based on patterns learned during training."
             },
-            { 
-                title: "2. The R-T-C-B Prompting Framework", 
-                content: "To get helpful study assistance from AI, structure prompts using four parts: Role (who the AI should act as), Task (what you need help understanding), Context (your grade level or topic), and Boundaries (rules like 'quiz me instead of writing the essay')." 
+            {
+                title: "2. The R-T-C-B Prompting Framework",
+                content: "To get helpful study assistance from AI, structure prompts using four parts: Role (who the AI should act as), Task (what you need help understanding), Context (your grade level or topic), and Boundaries (rules like 'quiz me instead of writing the essay')."
             },
-            { 
-                title: "3. Hallucinations & Fact Verification", 
-                content: "Because LLMs predict probable text rather than querying a verified database, they can confidently invent fake quotes, dates, or citations, a flaw called 'hallucination.' Always verify AI-generated facts against primary academic sources." 
+            {
+                title: "3. Hallucinations & Fact Verification",
+                content: "Because LLMs predict probable text rather than querying a verified database, they can confidently invent fake quotes, dates, or citations, a flaw called 'hallucination.' Always verify AI-generated facts against primary academic sources."
             }
         ],
         quizzes: [
@@ -90,17 +90,17 @@ const modulesData = [
         title: "Ethics, Bias & Academic Integrity",
         description: "Evaluate algorithmic bias, data privacy, copyright, and responsible AI use in grades 9–12.",
         chapters: [
-            { 
-                title: "1. Algorithmic Bias & Training Data", 
-                content: "AI models reflect the data they are trained on. If historical training datasets contain human prejudices or lack diverse representation, the AI system will repeat and amplify those biases in hiring, facial recognition, or grading tools." 
+            {
+                title: "1. Algorithmic Bias & Training Data",
+                content: "AI models reflect the data they are trained on. If historical training datasets contain human prejudices or lack diverse representation, the AI system will repeat and amplify those biases in hiring, facial recognition, or grading tools."
             },
-            { 
-                title: "2. AI & You: Academic Integrity Rules", 
-                content: "Using AI to brainstorm ideas, explain tough concepts, or generate practice quizzes supports learning. Submitting AI-generated writing or code as your own original work violates academic honesty policies and prevents skill development." 
+            {
+                title: "2. AI & You: Academic Integrity Rules",
+                content: "Using AI to brainstorm ideas, explain tough concepts, or generate practice quizzes supports learning. Submitting AI-generated writing or code as your own original work violates academic honesty policies and prevents skill development."
             },
-            { 
-                title: "3. Data Privacy & Digital Footprints", 
-                content: "Never paste personal information, passwords, private school records, or unpublished creative work into public AI chatbots, as prompts may be logged or used to train future models." 
+            {
+                title: "3. Data Privacy & Digital Footprints",
+                content: "Never paste personal information, passwords, private school records, or unpublished creative work into public AI chatbots, as prompts may be logged or used to train future models."
             }
         ],
         quizzes: [
@@ -118,6 +118,125 @@ const modulesData = [
                 question: "Why should you avoid entering sensitive personal data into public AI tools?",
                 options: ["It slows down the Wi-Fi", "Prompts may be stored or used to train future models", "AI cannot read personal names", "It deletes your browser history"],
                 correct: 1
+            }
+        ]
+    },
+    {
+        id: 3,
+        title: "Generative Media: Images, Audio & Deepfakes",
+        difficulty: "Intermediate",
+        estimatedMinutes: 25,
+        description: "Understand diffusion models, voice cloning, and how to spot synthetic media.",
+        chapters: [
+            {
+                title: "1. How AI Generates Images",
+                content: "Image generators use diffusion models. They start with random visual noise and slowly refine it step-by-step until it matches your text description.",
+                keyTakeaway: "AI does not copy-paste existing photos; it generates new pixels based on learned visual patterns."
+            },
+            {
+                title: "2. Voice Cloning & Synthetic Audio",
+                content: "AI audio models analyze recordings of a person's voice to learn their unique pitch, tone, and speaking rhythm. Once trained, the model can generate new spoken sentences or songs in that same voice from typed text.",
+                keyTakeaway: "Voice cloning only needs a few seconds of clear audio, which makes verifying unexpected phone calls or voice messages essential."
+            },
+            {
+                title: "3. Spotting Deepfakes & Synthetic Media",
+                content: "Deepfakes are realistic AI-generated videos or audio clips that make people appear to say or do things they never did. You can spot them by checking for unnatural blinking, blurry edges around faces, strange shadows, or out-of-sync audio.",
+                keyTakeaway: "Always cross-check shocking viral videos against reliable news outlets before sharing them."
+            }
+        ],
+        quizzes: [
+            {
+                question: "What process do modern AI image generators use to create pictures from text?",
+                options: ["Copy-pasting from Google Images", "Diffusion", "Spreadsheet sorting", "Audio compression"],
+                correct: 1,
+                explanation: "Diffusion models start with random static and gradually turn it into a clear image guided by your prompt."
+            },
+            {
+                question: "What visual clue often helps identify an AI-generated image or deepfake video?",
+                options: ["High screen resolution", "Unnatural lighting, blurry edges, or distorted hands", "Bright background colors", "Fast video playback speed"],
+                correct: 1,
+                explanation: "Generative models often struggle with fine details like fingers, reflections, and seamless borders around moving faces."
+            },
+            {
+                question: "How does AI voice cloning recreate someone's voice?",
+                options: ["By hiring a human voice actor", "By analyzing pitch, tone, and rhythm from sample audio recordings", "By translating text into Morse code", "By speeding up background music"],
+                correct: 1,
+                explanation: "Audio models break down vocal patterns from sample clips to predict how that voice would sound saying new words."
+            }
+        ]
+    },
+    {
+        id: 4,
+        title: "AI-Assisted Coding & Debugging",
+        difficulty: "Intermediate",
+        estimatedMinutes: 30,
+        description: "Learn how to use AI as a coding tutor, debug errors, and avoid insecure or broken code.",
+        chapters: [
+            {
+            title: "1. AI as a Pair Programmer, Not an Autopilot",
+            content: "AI coding assistants predict code syntax based on millions of public repositories. While they can rapidly generate boilerplate functions or explain unfamiliar code, they do not actually execute or test the code before showing it to you. Always treat AI as a junior pair programmer whose work must be reviewed and tested.",
+            keyTakeaway: "You are still the software architect; never paste code into a project if you cannot explain what each line does."
+            },
+            {
+            title: "2. Debugging Error Messages with AI",
+            content: "One of the best uses of AI in computer science is translating cryptic compiler or runtime error messages into plain English. By pasting your broken snippet alongside the exact error message, you can ask the AI to identify the root cause and explain how to fix it rather than just asking for a rewrite.",
+            keyTakeaway: "Include your programming language, the exact error message, and what you expected the code to do for the best debugging help."
+            },
+            {
+            title: "3. Security Risks & Hallucinated Packages",
+            content: "AI models sometimes invent fake software libraries—a phenomenon called 'package hallucination'—or suggest outdated code containing security flaws like hardcoded API keys. Installing an unknown library suggested by an AI can expose your computer to malware.",
+            keyTakeaway: "Always verify that any library or package recommended by an AI actually exists on official registries before installing it."
+            },
+            {
+            title: "4. Writing Effective Code Prompts",
+            content: "Vague prompts like 'make a website' produce generic, messy code. Strong coding prompts specify the language, input/output formats, edge cases to handle, and constraints (such as 'use plain JavaScript without external libraries').",
+            keyTakeaway: "Break big programming projects into small, testable functions and prompt for one piece at a time."
+            }
+        ],
+        quizzes: [
+            {
+            question: "Why must a programmer still test and review code generated by an AI assistant?",
+            options: [
+                "AI models predict likely code patterns without actually running or verifying the logic",
+                "AI-generated code only runs on Tuesdays",
+                "Compilers automatically block code written by AI",
+                "AI assistants always write code in binary"
+            ],
+            correct: 0,
+            explanation: "LLMs generate statistically probable syntax rather than executing the program in a real environment, which can lead to subtle logic bugs."
+            },
+            {
+            question: "Which prompt is the best way to use AI when your Python loop crashes with a 'TypeError'?",
+            options: [
+                "Fix my code.",
+                "Write the entire assignment from scratch so there are no bugs.",
+                "Explain what this TypeError means in my Python snippet and give me a hint on how to fix it without giving away the full answer.",
+                "Delete the error message from my screen."
+            ],
+            correct: 2,
+            explanation: "Asking for an explanation and a hint builds your debugging skills while keeping your work academically honest."
+            },
+            {
+            question: "What is 'package hallucination' in AI-assisted coding?",
+            options: [
+                "When a computer monitor turns blue",
+                "When an AI recommends installing a software library that does not actually exist",
+                "When code runs faster than expected",
+                "When a programmer forgets to save their file"
+            ],
+            correct: 1,
+            explanation: "AI models can invent plausible-sounding library names; attackers sometimes register those fake names with malicious code."
+            },
+            {
+            question: "What is a major security mistake when asking an AI to review your backend code?",
+            options: [
+                "Asking it to add comments to your functions",
+                "Pasting real passwords, API keys, or private user data into the prompt",
+                "Specifying which version of Python or JavaScript you are using",
+                "Asking for edge-case test ideas"
+            ],
+            correct: 1,
+            explanation: "Sensitive credentials pasted into public AI chats can be logged or exposed, compromising your application."
             }
         ]
     }
@@ -174,14 +293,6 @@ const careersData = [
     }
 ];
 
-let userProgress = {
-    username: "Guest Student",
-    xp: 0,
-    level: 0,
-    completedModules: [],
-    bonuses: { sentiment: false, prompt: false, integrity: false, career: false }
-};
-
 let currentActiveModuleIndex = null;
 let currentQuizStep = 0;
 let selectedQuizOptionIdx = null;
@@ -213,7 +324,9 @@ function switchView(target) {
         playground: ['view-playground', 'nav-playground'],
         integrity: ['view-integrity', 'nav-integrity'],
         careers: ['view-careers', 'nav-careers'],
+        leaderboard: ['view-leaderboard', 'nav-leaderboard'],
         references: ['view-references', 'nav-ref']
+
     };
 
     if (map[target]) {
@@ -350,18 +463,32 @@ function submitQuizAnswer() {
 
     if (selectedQuizOptionIdx === currentQ.correct) {
         if (currentQuizStep < mod.quizzes.length - 1) {
+            userProgress.correct++;
             currentQuizStep++;
             launchQuizSection();
         } else {
-            alert("Module Complete! You earned +100 XP and unlocked your badge.");
             if (!userProgress.completedModules.includes(mod.id)) {
+                alert("Module Complete! You earned +100 XP and unlocked your badge.");
                 userProgress.completedModules.push(mod.id);
                 userProgress.xp += 100;
+            } else {
+                alert("Module Complete! You earned +25 XP.");
+                userProgress.xp += 25;
+            }
+            if (userProgress.name != 'Guest') {
+                fetch('/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'Application/Json'
+                    },
+                    body: JSON.stringify({ correct: userProgress.correct, incorrect: userProgress.incorrect })
+                });
             }
             updateDashboardMetrics();
             exitLessonWorkspace();
         }
     } else {
+        userProgress.incorrect++;
         alert("Not quite! Review the chapter text and try that question again.");
     }
 }

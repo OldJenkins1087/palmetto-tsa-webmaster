@@ -113,7 +113,7 @@ nav ul {
     flex-wrap: wrap;
 }
 
-nav a {
+nav .link {
     color: var(--text-muted);
     text-decoration: none;
     font-weight: 500;
@@ -122,7 +122,7 @@ nav a {
     cursor: pointer;
 }
 
-nav a:hover, nav a.active {
+nav .link:hover, nav .link.active {
     color: var(--accent);
 }
 

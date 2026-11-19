@@ -14,18 +14,26 @@
                 <div class="logo">AI Learning Portal</div>
                 <nav>
                     <ul>
-                        <li><a id="nav-dash" class="active" onclick="switchView('dashboard')">Dashboard</a></li>
-                        <li><a id="nav-modules" onclick="switchView('modules')">Learning Tracks</a></li>
-                        <li><a id="nav-playground" onclick="switchView('playground')">AI Playground</a></li>
-                        <li><a id="nav-integrity" onclick="switchView('integrity')">AI &amp; You</a></li>
-                        <li><a id="nav-careers" onclick="switchView('careers')">Career Explorer</a></li>
-                        <li><a id="nav-ref" onclick="switchView('references')">TSA Reference Hub</a></li>
+                        <li><a id="nav-dash" class="active link" onclick="switchView('dashboard')">Dashboard</a></li>
+                        <li><a id="nav-modules" class="link" onclick="switchView('modules')">Learning Tracks</a></li>
+                        <li><a id="nav-playground" class="link" onclick="switchView('playground')">AI Playground</a></li>
+                        <li><a id="nav-integrity" class="link" onclick="switchView('integrity')">AI &amp; You</a></li>
+                        <li><a id="nav-careers" class="link" onclick="switchView('careers')">Career Explorer</a></li>
+                        <li><a id="nav-leaderboard" class="link" onclick="switchView('leaderboard')">Leaderboard</a></li>
+                        <li><a id="nav-ref" class="link" onclick="switchView('references')">TSA Reference Hub</a></li>
                     </ul>
                 </nav>
                 <div class="user-status-widget">
-                    <span id="user-display-name" style="font-weight: 500;">Guest Student</span>
+                    <span id="user-display-name" style="font-weight: 500;">{{ username }}</span>
                     <span style="color: var(--text-muted)">|</span>
                     <span id="global-xp-display" style="color: var(--warning); font-weight: bold;">0 XP</span>
+                </div>
+                <div>
+                    {% if username=="Guest" %}
+                        <button class="btn"><a href="/login">login</a></button>
+                    {% else %}
+                        <button class="btn"><a href="/logout">logout</a></button>
+                    {% endif %}
                 </div>
             </div>
         </header>
@@ -38,9 +46,9 @@
                         <div class="card">
                             <h2>Welcome back, <span class="student-name">Guest Student</span>!</h2>
                             <p style="margin-bottom: 1rem;">Demystifying Artificial Intelligence concepts, execution strategies, and ethics for grades 9–12 academic environments.</p>
-                            <div style="max-width: 340px;">
-                                <input type="text" class="form-control" placeholder="Personalize display name (optional)..." oninput="updateStudentName(this.value)">
-                            </div>
+                            <!-- <div style="max-width: 340px;">
+                                <input type="text" class="form-control" placeholder="Personalize display name (optional)...">
+                            </div> -->
                         </div>
                         <div class="card">
                             <h2>Overall Portal Progress</h2>
@@ -143,7 +151,7 @@
                     
                     <div class="two-col-grid">
                         <div class="integrity-box">
-                            <h3 style="color: var(--success);">✅ Green Light: Ethical Study Partner</h3>
+                            <h3 style="color: var(--success);">Green Light: Ethical Study Partner</h3>
                             <ul>
                                 <li><strong>Concept Explainer:</strong> Asking AI to break down difficult AP Biology or Algebra concepts using analogies.</li>
                                 <li><strong>Practice Quiz Generator:</strong> Generating custom flashcards and mock test questions from your own class notes.</li>
@@ -152,7 +160,7 @@
                             </ul>
                         </div>
                         <div class="integrity-box red-light">
-                            <h3 style="color: var(--danger);">🚫 Red Light: Academic Dishonesty</h3>
+                            <h3 style="color: var(--danger);">Red Light: Academic Dishonesty</h3>
                             <ul>
                                 <li><strong>Ghostwriting Essays:</strong> Submitting AI-generated paragraphs or essays as your own original writing.</li>
                                 <li><strong>Bypassing Problem Solving:</strong> Copying homework answers directly without working through the steps.</li>
@@ -181,12 +189,18 @@
             <!-- AI CAREER EXPLORER VIEW -->
             <section id="view-careers" class="view-section">
                 <div class="card">
-                    <h2>🧭 AI Career Explorer (Grades 9–12 Pathway Map)</h2>
+                    <h2>AI Career Explorer (Grades 9-12 Pathway Map)</h2>
                     <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Click any AI career role below to inspect high school classes to take now, essential skills, and real-world responsibilities (+15 XP for exploring).</p>
                     
                     <div class="three-col-grid" id="career-cards-grid"></div>
 
                     <div id="career-detail-panel" style="margin-top: 1.5rem; background-color: var(--bg-primary); border: 1px solid var(--accent); border-radius: 8px; padding: 1.5rem; display: none;"></div>
+                </div>
+            </section>
+
+            <section id="view-leaderboard" class="view-section">
+                <div class="card">
+                    <h2>Leaderboard</h2>
                 </div>
             </section>
 
@@ -208,6 +222,10 @@
                             <tr>
                                 <td>Vanilla EcmaScript 6+ &amp; HTML5 DOM</td>
                                 <td>Interactive system environment built entirely without compilation framework packages or CMS builders to adhere to TSA Rule H.</td>
+                            </tr>
+                            <tr>
+                                <td>Python Flask</td>
+                                <td>Lightweight web framework for server-sided applications, providing features for routing, request handling, and templating.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -254,6 +272,17 @@
         </div>
     </div>
 
+    <script>
+        let userProgress = {
+            username: "{{ username }}",
+            xp: 0,
+            level: 0,
+            correct: 0,
+            incorrect: 0,
+            completedModules: [],
+            bonuses: { sentiment: false, prompt: false, integrity: false, career: false }
+        };
+    </script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
