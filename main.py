@@ -34,6 +34,7 @@ update_log = {}
 
 # Constants
 MODULES = ["foundations", "prompting", "responsibility", "deepfakes", "coding"]
+# {'correct': 3, 'incorrect': 0, 'module': 0}
 CORRECT_UPDATE_KEYS = ['correct', 'incorrect', 'module']
 LEADERBOARD_LIMIT = 25
 MIN_ANSWERS_FOR_RATIO = 1 
@@ -122,8 +123,7 @@ def complete_module():
 
     data = request.get_json() or {}
     # Validate data format
-    if isinstance(data, dict) and len(list(data.keys())) == len(CORRECT_UPDATE_KEYS) and all(x in data.keys() for x in CORRECT_UPDATE_KEYS):
-        print(jsonify(data).json)
+    if not (isinstance(data, dict) and len(list(data.keys())) == len(CORRECT_UPDATE_KEYS) and all(x in data.keys() for x in CORRECT_UPDATE_KEYS)):
         return {"error": "unknown data structure"}, 400
     module_slug = MODULES[data["module"]]
 
