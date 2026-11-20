@@ -802,7 +802,8 @@ function renderLeaderboard() {
     } else {
         lbShowStatus(null);
     }
-
+    
+    // Ignore blank leaderboard
     if (!data) {
         bodyEl.innerHTML = '';
         meEl.style.display = 'none';
