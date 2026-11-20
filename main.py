@@ -172,9 +172,6 @@ def _user_row(u, rank):
 
 @app.get("/api/leaderboard")
 def leaderboard():
-    if current_user.is_anonymous:
-        return {"error": "not logged in"}, 401
-
     # ---------- Top N by XP ----------
     xp_users = (
         db.session.query(Users)
@@ -212,13 +209,15 @@ def leaderboard():
         by_ratio.append(row)
 
     # ---------- Caller's own stats (handy for a "you" row) ----------
-    me = db.session.get(Users, current_user.id)
-    you = {
-        "username": me.username,
-        "xp": me.xp,
-        "correct": me.correct,
-        "incorrect": me.incorrect,
-    }
+    you = {"username": "Guest", "xp": 0, "correct": 0, "incorrect": 0}
+    if not current_user.is_anonymous:
+        me = db.session.get(Users, current_user.id)
+        you = {
+            "username": me.username,
+            "xp": me.xp,
+            "correct": me.correct,
+            "incorrect": me.incorrect,
+        }
 
     return jsonify({
         "by_xp": by_xp,

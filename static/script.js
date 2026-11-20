@@ -790,7 +790,6 @@ function renderLeaderboard() {
         btn.setAttribute('aria-selected', active ? 'true' : 'false');
     });
 
-    // The XP column only makes sense on the XP board
     document.querySelectorAll('.lb-xp-col').forEach(function (el) {
         el.hidden = (mode !== 'by_xp');
     });
@@ -807,6 +806,7 @@ function renderLeaderboard() {
     if (!data) {
         bodyEl.innerHTML = '';
         meEl.style.display = 'none';
+        console.log("No leaderboard data")
         return;
     }
 
