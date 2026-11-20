@@ -120,9 +120,9 @@ def complete_module():
     if current_user.is_anonymous:
         return {"error": "not logged in"}, 401
 
-    data = request.get_json(silent=True) or {}
+    data = request.get_json() or {}
     # Validate data format
-    if isinstance(data, dict) and len(data.keys()) == len(CORRECT_UPDATE_KEYS) and all(x in data.keys() for x in CORRECT_UPDATE_KEYS):
+    if isinstance(data, dict) and len(list(data.keys())) == len(CORRECT_UPDATE_KEYS) and all(x in data.keys() for x in CORRECT_UPDATE_KEYS):
         return {"error": "unknown data structure"}, 400
     module_slug = MODULES[data["module"]]
 
