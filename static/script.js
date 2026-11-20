@@ -292,6 +292,14 @@ const careersData = [
         dailyWork: "Creates energy-efficient processors (GPUs/NPUs) and autonomous robotic systems for manufacturing and space exploration."
     }
 ];
+const LEADERBOARD_CACHE_MS = 30000; // 30 second update interval
+const LEADERBOARD_STATE = {
+    data: null,
+    mode: 'by_xp',
+    fetchedAt: 0,
+    loading: false,
+    error: null
+};
 
 let currentActiveModuleIndex = null;
 let currentQuizStep = 0;
@@ -476,14 +484,16 @@ function submitQuizAnswer() {
                 userProgress.xp += 25;
             }
             if (userProgress.name != 'Guest') {
-                fetch('/update', {
+                fetch('/api/module/complete', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'Application/Json'
                     },
-                    body: JSON.stringify({ correct: userProgress.correct, incorrect: userProgress.incorrect })
+                    body: JSON.stringify({ correct: userProgress.correct, incorrect: userProgress.incorrect, module: currentActiveModuleIndex})
                 });
             }
+            userProgress.correct = 0;
+            userProgress.incorrect = 0;
             updateDashboardMetrics();
             exitLessonWorkspace();
         }
@@ -504,7 +514,7 @@ function updateDashboardMetrics() {
     document.getElementById('global-xp-display').textContent = userProgress.xp + ' XP';
     document.getElementById('stat-level').textContent = userProgress.level;
     document.getElementById('stat-xp').textContent = userProgress.xp;
-    document.getElementById('stat-completed').textContent = userProgress.completedModules.length + '/3';
+    document.getElementById('stat-completed').textContent = userProgress.completedModules.length + '/' + modulesData.length;
 
     const percentage = (userProgress.completedModules.length / 3) * 100;
     document.getElementById('portal-progress-bar').style.width = percentage + '%';
@@ -655,4 +665,189 @@ function selectCareer(idx) {
         userProgress.xp += 15;
         updateDashboardMetrics();
     }
+}
+
+
+// Leaderboard Helpers
+function lbTotal(item) {
+    return (item.correct || 0) + (item.incorrect || 0);
+}
+
+function lbXp(item) {
+    return typeof item.xp === 'number' ? item.xp : (item.correct || 0);
+}
+
+function lbAccuracy(item) {
+    const total = lbTotal(item);
+    return total > 0 ? (item.correct / total) * 100 : 0;
+}
+
+function lbFormatNumber(n) {
+    return Number(n || 0).toLocaleString();
+}
+
+function lbEscape(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+    });
+}
+
+// Leaderboard
+function setLeaderboardMode(mode) {
+    if (mode !== 'by_xp' && mode !== 'by_ratio') return;
+    if (LEADERBOARD_STATE.mode === mode) return;
+    LEADERBOARD_STATE.mode = mode;
+    renderLeaderboard();
+}
+
+async function loadLeaderboard(force) {
+    // Refresh leaderboard
+    const isFresh = Date.now() - LEADERBOARD_STATE.fetchedAt < LEADERBOARD_CACHE_MS;
+    if (!force && LEADERBOARD_STATE.data && isFresh) {
+        renderLeaderboard();
+        return;
+    }
+
+    LEADERBOARD_STATE.loading = true;
+    LEADERBOARD_STATE.error = null;
+    renderLeaderboard();
+
+    try {
+        // Fetch leaderboard data
+        const res = await fetch('/api/leaderboard', {
+            headers: { 'Accept': 'application/json' },
+            credentials: 'same-origin'
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+
+        const data = await res.json();
+        LEADERBOARD_STATE.data = {
+            by_xp: Array.isArray(data.by_xp) ? data.by_xp : [],
+            by_ratio: Array.isArray(data.by_ratio) ? data.by_ratio : [],
+            me: data.me || null
+        };
+        LEADERBOARD_STATE.fetchedAt = Date.now();
+    } catch (err) {
+        LEADERBOARD_STATE.error = 'Could not load the leaderboard. Please try again.';
+        console.error('[leaderboard]', err);
+    } finally {
+        LEADERBOARD_STATE.loading = false;
+        renderLeaderboard();
+    }
+}
+
+function lbShowStatus(message, isError) {
+    const el = document.getElementById('leaderboard-status');
+    if (!el) return;
+    if (!message) {
+        el.style.display = 'none';
+        el.textContent = '';
+        return;
+    }
+    el.style.display = '';
+    el.textContent = message;
+    el.className = 'lb-status' + (isError ? ' lb-error' : '');
+}
+
+function lbBuildRow(item, me, mode) {
+    const isMe = !!me && me.username === item.username && me.rank === item.rank;
+    const medal = { 1: '🥇', 2: '🥈', 3: '🥉' }[item.rank];
+    const rankCell = medal
+        ? '<span aria-hidden="true">' + medal + '</span> ' + item.rank
+        : item.rank;
+
+    const userCell = '<span class="lb-user">' + lbEscape(item.username) + '</span>' +
+        (isMe ? ' <span class="tag-pill lb-you-tag">you</span>' : '');
+
+    const total = lbTotal(item);
+    const accuracy = total > 0 ? lbAccuracy(item).toFixed(1) + '%' : '—';
+
+    return '' +
+        '<tr class="' + (isMe ? 'lb-me-row' : '') + '">' +
+            '<td class="lb-rank">' + rankCell + '</td>' +
+            '<td>' + userCell + '</td>' +
+            '<td class="lb-xp-col"' + (mode !== 'by_xp' ? ' hidden' : '') + '>' +
+                lbFormatNumber(lbXp(item)) + '</td>' +
+            '<td>' + lbFormatNumber(item.correct) + '</td>' +
+            '<td>' + lbFormatNumber(item.incorrect) + '</td>' +
+            '<td class="lb-accuracy">' + accuracy + '</td>' +
+        '</tr>';
+}
+
+function renderLeaderboard() {
+    const bodyEl = document.getElementById('leaderboard-body');
+    const meEl = document.getElementById('leaderboard-me-card');
+    if (!bodyEl || !meEl) return;
+
+    const mode = LEADERBOARD_STATE.mode;
+    const data = LEADERBOARD_STATE.data;
+
+    // Toggle button states
+    document.querySelectorAll('.lb-toggle-btn').forEach(function (btn) {
+        const active = btn.dataset.board === mode;
+        btn.classList.toggle('active-lb-toggle', active);
+        btn.classList.toggle('btn-secondary', !active);
+        btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+
+    // The XP column only makes sense on the XP board
+    document.querySelectorAll('.lb-xp-col').forEach(function (el) {
+        el.hidden = (mode !== 'by_xp');
+    });
+
+    // Status line
+    if (LEADERBOARD_STATE.loading) {
+        lbShowStatus('Loading leaderboard…', false);
+    } else if (LEADERBOARD_STATE.error) {
+        lbShowStatus(LEADERBOARD_STATE.error, true);
+    } else {
+        lbShowStatus(null);
+    }
+
+    if (!data) {
+        bodyEl.innerHTML = '';
+        meEl.style.display = 'none';
+        return;
+    }
+
+    // Rows (already sorted server-side by the requested metric)
+    const rows = data[mode] || [];
+    if (rows.length === 0) {
+        bodyEl.innerHTML = '<tr><td class="lb-empty" colspan="6">' +
+            'No rankings yet — be the first to climb the board.</td></tr>';
+    } else {
+        bodyEl.innerHTML = rows.map(function (item) {
+            return lbBuildRow(item, data.me, mode);
+        }).join('');
+    }
+
+    // "Your position" card
+    const me = data.me;
+    if (!me) {
+        meEl.style.display = 'none';
+        return;
+    }
+
+    const meTotal = lbTotal(me);
+    const meAccuracy = meTotal > 0 ? lbAccuracy(me).toFixed(1) + '%' : '—';
+
+    meEl.style.display = '';
+    meEl.innerHTML = '' +
+        '<h3>Your position</h3>' +
+        '<div class="stats-row lb-me-stats">' +
+            '<div class="stat-box">' +
+                '<div class="num">#' + me.rank + '</div>' +
+                '<div class="lb-stat-label">Rank</div>' +
+            '</div>' +
+            '<div class="stat-box">' +
+                '<div class="num">' + lbFormatNumber(me.correct) + '</div>' +
+                '<div class="lb-stat-label">Correct</div>' +
+            '</div>' +
+            '<div class="stat-box">' +
+                '<div class="num">' + meAccuracy + '</div>' +
+                '<div class="lb-stat-label">Accuracy</div>' +
+            '</div>' +
+        '</div>' +
+        '<p class="lb-me-note">Ranked as <strong>' + lbEscape(me.username) + '</strong> on the ' +
+            (mode === 'by_xp' ? 'Total XP' : 'Accuracy Ratio') + ' board.</p>';
 }

@@ -65,7 +65,7 @@
                                     <div style="font-size:0.85rem; color:var(--text-muted)">Total XP</div>
                                 </div>
                                 <div class="stat-box">
-                                    <div class="num" id="stat-completed">0/3</div>
+                                    <div class="num" id="stat-completed">0/5</div>
                                     <div style="font-size:0.85rem; color:var(--text-muted)">Modules Complete</div>
                                 </div>
                             </div>
@@ -197,10 +197,41 @@
                     <div id="career-detail-panel" style="margin-top: 1.5rem; background-color: var(--bg-primary); border: 1px solid var(--accent); border-radius: 8px; padding: 1.5rem; display: none;"></div>
                 </div>
             </section>
-
+            <!-- LEADERBOARD VIEW -->
+            <!-- ===================== LEADERBOARD ===================== -->
             <section id="view-leaderboard" class="view-section">
                 <div class="card">
                     <h2>Leaderboard</h2>
+                    <p class="lb-subtitle">See how you stack up against other learners. Switch between total XP and accuracy ratio.</p>
+
+                    <div class="lb-toggle" role="tablist" aria-label="Leaderboard type">
+                        <button type="button" class="btn lb-toggle-btn active-lb-toggle" role="tab"
+                                data-board="by_xp" aria-selected="true"
+                                onclick="setLeaderboardMode('by_xp')">Total XP</button>
+                        <button type="button" class="btn btn-secondary lb-toggle-btn" role="tab"
+                                data-board="by_ratio" aria-selected="false"
+                                onclick="setLeaderboardMode('by_ratio')">Accuracy Ratio</button>
+                    </div>
+
+                    <div id="leaderboard-status" class="lb-status" style="display:none;"></div>
+
+                    <div class="table-scroll">
+                        <table class="source-table" id="leaderboard-table">
+                            <thead>
+                                <tr>
+                                    <th class="lb-rank-col">Rank</th>
+                                    <th>Learner</th>
+                                    <th class="lb-xp-col">XP</th>
+                                    <th>Correct</th>
+                                    <th>Incorrect</th>
+                                    <th>Accuracy</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboard-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div id="leaderboard-me-card" class="integrity-box lb-me-card" style="display:none;"></div>
                 </div>
             </section>
 
@@ -273,13 +304,13 @@
     </div>
 
     <script>
-        let userProgress = {
+        var userProgress = {
             username: "{{ username }}",
-            xp: 0,
-            level: 0,
+            xp: {{ xp }},
+            level: Math.floor({{ xp }} / 100),
             correct: 0,
             incorrect: 0,
-            completedModules: [],
+            completedModules: {{ modules }},
             bonuses: { sentiment: false, prompt: false, integrity: false, career: false }
         };
     </script>
